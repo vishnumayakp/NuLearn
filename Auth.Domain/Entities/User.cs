@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace Auth.Domain.Entities
 {
-    internal class User
+    public  class User:AuditableEntity
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public bool IsEmailVerified { get; set; }
+        public string? EmailVerificationToken { get; set; }
+        public DateTime? EmailVerificationTokenExpiry { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiry { get; set; }
+        public string Role { get; set; }
+
     }
 }
