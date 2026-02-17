@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\" />
-    <Folder Include="Features\Auth\Commands\Login\" />
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Instructor\Commands\" />
     <Folder Include="Features\Instructor\Queries\" />

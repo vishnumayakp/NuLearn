@@ -11,5 +11,6 @@ namespace Auth.Application.Interfaces.IRepository
     {
         Task AddUser(User user);
         Task<bool> EmailExist(string email);
+        Task<User?> GetUserByEmail(string email);
     }
 }

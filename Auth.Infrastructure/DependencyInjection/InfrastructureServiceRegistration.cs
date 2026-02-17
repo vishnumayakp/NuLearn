@@ -23,6 +23,7 @@ namespace Auth.Infrastructure.DependencyInjection
 
             services.AddScoped<IUserRepository,UserRepository>();
             services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<IJwtService,JwtService>();
 
             return services;
             
