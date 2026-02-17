@@ -1,7 +1,9 @@
+using System.Text;
 using Auth.Application;
 using Auth.Application.DepndencyInjection;
 using Auth.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var securityKey = builder.Configuration["JwtSettings:SecretKey"];
+var issuer = builder.Configuration["JwtSettings:Issuer"];
+var audience = builder.Configuration["JwtSettings:Audience"];
+
+if (string.IsNullOrEmpty(securityKey))
+    throw new Exception("JWT SecurityKey is missing in configuration.");
+
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey!))
+        };
+    });
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +51,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
